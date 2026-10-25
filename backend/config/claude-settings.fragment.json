@@ -1,0 +1,87 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-claude-statusline --show",
+    "refreshInterval": 5
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider claude --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider claude --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider claude --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt|idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider claude --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider claude --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider claude --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider claude --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

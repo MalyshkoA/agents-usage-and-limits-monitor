@@ -1,0 +1,24 @@
+[project]
+name = "quota-watch-bridge"
+version = "0.1.0"
+description = "Secure multi-device Claude/Codex quota and activity bridge for Apple Watch JSON complications"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "pydantic>=2.7,<3",
+  "uvicorn[standard]>=0.34,<1",
+]
+
+[project.scripts]
+quota-watch-server = "quota_watch.server.app:run"
+quota-watch-agent = "quota_watch.client.agent:main"
+quota-watch-hook = "quota_watch.client.hook_event:main"
+quota-watch-claude-statusline = "quota_watch.client.claude_statusline:main"
+quota-watch-poller = "quota_watch.poller.main:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

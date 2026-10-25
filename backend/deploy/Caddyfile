@@ -1,0 +1,20 @@
+{$QWB_DOMAIN} {
+    encode zstd gzip
+    request_body {
+        max_size 64KB
+    }
+    @quota_watch_backend path /healthz /v1/ingest/* /v1/widget
+    handle @quota_watch_backend {
+        reverse_proxy quota-watch:8787
+    }
+    handle {
+        respond 404
+    }
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "no-referrer"
+        -Server
+    }
+}

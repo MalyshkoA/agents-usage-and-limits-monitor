@@ -1,0 +1,13 @@
+# Copy to CIRCUITPY/settings.toml. Never commit the real file.
+CIRCUITPY_WIFI_SSID="your-network"
+CIRCUITPY_WIFI_PASSWORD="your-password"
+
+# Quota Watch Bridge read-only widget key (one of QWB_WIDGET_KEYS on the server).
+QWB_WIDGET_URL="https://quota.example.com/v1/widget"
+QWB_WIDGET_KEY=""
+
+# Local clock offset from UTC in whole hours; the RTC itself runs in UTC.
+TZ_OFFSET_HOURS=0
+
+# RGB panel pixel clock. Lower = less PSRAM contention with Wi-Fi, but more flicker.
+PANEL_FREQUENCY_HZ=16000000

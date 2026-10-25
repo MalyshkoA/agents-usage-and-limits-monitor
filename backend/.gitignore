@@ -1,0 +1,14 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+client.toml
+server-secrets.json
+runtime/
+node_modules/
+build/
+*.egg-info/
+.env.poller

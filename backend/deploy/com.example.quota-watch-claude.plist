@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.example.quota-watch-claude</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>NODE_BINARY</string>
+    <string>INSTALL_DIR/claude_usage/collect.mjs</string>
+    <string>/Users/REPLACE_ME/.local/state/quota-watch/claude-limits.json</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>INSTALL_DIR/claude_usage</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StartInterval</key>
+  <integer>60</integer>
+  <key>StandardOutPath</key>
+  <string>/Users/REPLACE_ME/Library/Logs/quota-watch-claude.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/REPLACE_ME/Library/Logs/quota-watch-claude.error.log</string>
+  <key>ProcessType</key>
+  <string>Background</string>
+</dict>
+</plist>

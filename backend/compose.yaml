@@ -1,0 +1,112 @@
+services:
+  # API: signed ingest from computers and the poller, read-only widget JSON
+  # for the display. Reachable only through Caddy, no host port.
+  quota-watch:
+    container_name: quota-watch
+    build: .
+    restart: unless-stopped
+    env_file: ${QWB_ENV_FILE:-.env}
+    environment:
+      QWB_DATABASE_PATH: /data/quota-watch.sqlite3
+    volumes:
+      - quota-watch-data:/data
+    networks:
+      - quota-watch-edge
+      - quota-watch-internal
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 192m
+    memswap_limit: 256m
+    cpus: 0.50
+    pids_limit: 64
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8787/healthz', timeout=2)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # Polls Codex/Claude limits with its own server sessions and reports them to
+  # quota-watch over the private network. No ports, not on the edge network.
+  quota-poller:
+    container_name: quota-poller
+    build:
+      context: .
+      dockerfile: poller.Dockerfile
+    restart: unless-stopped
+    env_file: ${QWB_POLLER_ENV_FILE:-.env.poller}
+    volumes:
+      - quota-poller-data:/data
+    networks:
+      - quota-watch-internal
+    depends_on:
+      - quota-watch
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 512m
+    memswap_limit: 768m
+    cpus: 0.50
+    pids_limit: 128
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # TLS edge: obtains and renews a certificate for QWB_DOMAIN and forwards only
+  # the API paths. Already running a reverse proxy? Remove this service and
+  # route /healthz, /v1/ingest/* and /v1/widget to quota-watch:8787 instead.
+  caddy:
+    container_name: quota-watch-caddy
+    image: caddy:2.8
+    restart: unless-stopped
+    environment:
+      QWB_DOMAIN: ${QWB_DOMAIN:?set QWB_DOMAIN in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - quota-watch-edge
+    depends_on:
+      - quota-watch
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  quota-watch-data:
+  quota-poller-data:
+  caddy-data:
+  caddy-config:
+
+networks:
+  # Private bridge between the poller and the API (outbound internet allowed).
+  quota-watch-internal: {}
+  # Caddy and the API.
+  quota-watch-edge: {}

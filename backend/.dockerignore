@@ -1,0 +1,12 @@
+.env
+.git
+.venv
+__pycache__
+*.pyc
+*.sqlite3*
+runtime
+tests
+client.toml
+server-secrets.json
+node_modules
+.env.poller

@@ -1,0 +1,28 @@
+server_url = "https://quota.example.com"
+device_id = "macbook-pro"
+display_name = "MacBook Pro"
+# Prefer a separate chmod 600 file for a background service. An environment
+# variable named QWB_DEVICE_SECRET takes precedence when it is set.
+device_secret_file = "~/.config/quota-watch/device-secret"
+device_secret_env = "QWB_DEVICE_SECRET"
+state_dir = "~/.local/state/quota-watch"
+# Local files are checked at this interval. No network request is made unless
+# their meaningful content changed since the last successful upload.
+check_seconds = 5
+# Codex limits are queried locally at this cadence only while Codex is active.
+# A query does not imply an upload: unchanged values remain local.
+limit_poll_seconds = 5
+# 0 keeps the last hook state until a later hook changes it. This is necessary
+# for long tasks in change-only mode, where there are deliberately no heartbeats.
+active_state_ttl_seconds = 0
+account_id = "personal"
+
+[providers.codex]
+enabled = true
+binary = "codex"
+# true: query Codex limits every limit_poll_seconds even while idle, so window
+# resets reach the server without waiting for the next Codex task.
+poll_when_idle = false
+
+[providers.claude]
+enabled = true

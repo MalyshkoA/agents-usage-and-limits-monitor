@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Enclosure R4</title>
+<style>html,body{margin:0;height:100%;background:#1b1d20;color:#ddd;font:13px -apple-system,sans-serif}#hint{position:fixed;left:12px;top:10px;opacity:.75}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
+</head><body><div id="hint">Enclosure R4 · 107.1 × 60 × 35.7 mm · frame 7.8 mm at the ends, 3.1 mm top and bottom · left drag rotates, right drag pans, wheel zooms</div>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const r=new THREE.WebGLRenderer({antialias:true}); r.setSize(innerWidth,innerHeight); r.setPixelRatio(devicePixelRatio); document.body.appendChild(r.domElement);
+const s=new THREE.Scene(); s.background=new THREE.Color(0x1b1d20);
+const c=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,1,2000); c.up.set(0,0,1); c.position.set(-60,-170,110);
+s.add(new THREE.HemisphereLight(0xffffff,0x334455,1.4)); const d=new THREE.DirectionalLight(0xffffff,1.8); d.position.set(-80,-120,160); s.add(d);
+const grid=new THREE.GridHelper(200,20,0x444444,0x2a2a2a); grid.rotation.x=Math.PI/2; s.add(grid);
+const ctl=new OrbitControls(c,r.domElement); ctl.target.set(53,30,15); ctl.update();
+new GLTFLoader().load('asb-r4-assembly-preview.glb?v='+Date.now(),g=>{g.scene.traverse(o=>{if(o.isMesh){o.material.side=THREE.DoubleSide;o.material.metalness=0;o.material.roughness=.7;}}); g.scene.rotation.x=0; s.add(g.scene);});
+addEventListener('resize',()=>{c.aspect=innerWidth/innerHeight;c.updateProjectionMatrix();r.setSize(innerWidth,innerHeight)});
+(function loop(){requestAnimationFrame(loop);r.render(s,c)})();
+</script></body></html>

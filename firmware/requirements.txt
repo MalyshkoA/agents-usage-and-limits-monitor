@@ -1,0 +1,8 @@
+adafruit-circuitpython-qualia
+adafruit-circuitpython-display-text
+adafruit-circuitpython-display-shapes
+adafruit-circuitpython-bitmap-font
+adafruit-circuitpython-imageload
+adafruit-circuitpython-ntp
+adafruit-circuitpython-requests
+adafruit-circuitpython-connectionmanager

@@ -1,0 +1,82 @@
+{
+  "description": "Publish privacy-preserving Codex activity to the local Quota Watch agent.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider codex --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider codex --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider codex --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider codex --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Interrupt": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider codex --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider codex --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.local/share/quota-watch-bridge/bin/quota-watch-hook --provider codex --push",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}
