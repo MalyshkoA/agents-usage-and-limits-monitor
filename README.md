@@ -51,24 +51,19 @@ printable R4 enclosure from this repository. Photos of the built unit are coming
 ```mermaid
 flowchart LR
     subgraph computers["Your computers"]
-        hooks["Codex and Claude Code hooks<br/>quota-watch-hook --push"]
-    end
-    subgraph server["Your server · Docker Compose"]
-        caddy["Caddy<br/>TLS, API paths only"]
-        api["quota-watch<br/>FastAPI + SQLite"]
-        poller["quota-poller<br/>Codex app-server +<br/>Claude Agent SDK"]
+        hooks["Codex and Claude Code hooks"]
     end
     subgraph device["The monitor"]
-        fw["CircuitPython firmware<br/>Adafruit Qualia ESP32-S3"]
-        lcd["ER-TFT3.71-1<br/>960×240 IPS"]
+        direction TB
+        fw["Adafruit Qualia ESP32-S3<br/>CircuitPython firmware"] -- "40-pin RGB" --> lcd["ER-TFT3.71-1<br/>960×240 IPS"]
         case["3D-printed R4 enclosure"]
     end
-    hooks -- "HMAC-signed POST /v1/ingest<br/>(activity, on every event)" --> caddy
-    caddy --> api
-    poller -- "signed POST, private network<br/>(limits every 15 s)" --> api
-    fw -- "GET /v1/widget + read-only key<br/>(every second, over Wi-Fi)" --> caddy
-    fw -- "40-pin RGB" --> lcd
-    case -. holds .- fw
+    subgraph server["Your server · Docker Compose"]
+        caddy["Caddy<br/>TLS, API paths only"] --> api["quota-watch API<br/>FastAPI + SQLite"]
+        poller["quota-poller<br/>own Codex and Claude sessions,<br/>limits every 15 s"] --> api
+    end
+    hooks -- "signed POST /v1/ingest<br/>activity, on every event" --> caddy
+    device -- "GET /v1/widget, read-only key<br/>every second over Wi-Fi" --> caddy
 ```
 
 | Layer | Folder | What it is |
